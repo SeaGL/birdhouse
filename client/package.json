@@ -1,0 +1,16 @@
+{
+  "name": "birdhouse-client",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js ./config.dev.json"
+  },
+  "author": "AJ Jordan <alex@strugee.net>",
+  "license": "AGPL-3.0+",
+  "private": true,
+  "description": "",
+  "dependencies": {
+    "centrifuge": "^5.4.0"
+  }
+}
