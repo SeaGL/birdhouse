@@ -10,6 +10,7 @@ Some random hopefully helpful notes on how to hack on this codebase.
 * No custom server components
 * No build step, see "good performance" in non-goals
 * Don't build stuff ourselves - this means preferring multiple connectivity options over a unified connectivity option if it means we can use stuff off-the-shelf (this is the rationale for OBS WebSocket connections not going through Centrifugo)
+* Be easy to debug in production - any info you might want should be there already
 
 ## Non-goals
 
