@@ -21,6 +21,9 @@
 		<button class="nav-link" id="stream-control-tab" data-bs-toggle="tab" data-bs-target="#stream-control-tab-pane" type="button" role="tab" aria-controls="stream-control-tab-pane" aria-selected="false">Control streams</button>
 	</li>
 	<li class="nav-item" role="presentation">
+		<button class="nav-link" id="host-control-tab" data-bs-toggle="tab" data-bs-target="#host-control-tab-pane" type="button" role="tab" aria-controls="host-control-tab-pane" aria-selected="false">Control hosts</button>
+	</li>
+	<li class="nav-item" role="presentation">
 		<button class="nav-link" id="hugops-tab" data-bs-toggle="tab" data-bs-target="#hugops-tab-pane" type="button" role="tab" aria-controls="hugops-tab-pane" aria-selected="false">#hugops</button>
 	</li>
 </ul>
@@ -30,7 +33,33 @@
 	</div>
 	<div class="tab-pane fade" id="pt-monitor-tab-pane" role="tabpanel" aria-labelledby="pt-monitor-tab" tabindex="0">Monitor PeerTube streams (TODO)</div>
 	<div class="tab-pane fade" id="stream-control-tab-pane" role="tabpanel" aria-labelledby="stream-control-tab" tabindex="0">
-		<div id="stream-control-tab-pane-inner" class="d-flex flex-wrap justify-content-evenly gap-2 m-3">Connecting to Centrifugo (Birdhouse ↔ OBS message broker)... if you've been stuck on this screen for more than a few seconds, try refreshing or checking the devtools console for errors.</div>
+		<div id="stream-control-tab-pane-inner" class="d-flex flex-wrap justify-content-evenly gap-2 m-3">Connecting to Centrifugo (Birdhouse ↔ OBS message broker)... if you've been stuck on this screen for more than a few seconds, try refreshing or checking the devtools console for errors.<p>TODO make this tab actually work by embedding some 3rd party OBS web UI in it.</p></div>
+	</div>
+	<div class="tab-pane fade" id="host-control-tab-pane" role="tabpanel" aria-labelledby="host-control-tab" tabindex="0">
+		<div id="host-control-tab-pane-inner" class="d-flex flex-wrap justify-content-evenly gap-2 m-3"><div id="host-control-connecting-msg">Connecting to Centrifugo (Birdhouse ↔ OBS message broker)... if you've been stuck on this screen for more than a few seconds, try refreshing or checking the devtools console for errors.</div></div>
+		<div id="host-control-tab-pane-template" hidden>
+			<h2 class="host-control-hostname-heading"></h2>
+			<div class="card">
+				<div class="card-header">Common</div>
+				<div class="card-body">
+					<button class="host-control-run-command btn btn-primary" data-command="seagl-upload-raw-video">Trigger manual raw video upload</button>
+					<button class="host-control-run-command btn btn-warning" data-command="sudo rpm-ostree upgrade">Run <code>rpm-ostree upgrade</code> (adds a bit of load, try not to use during a stream if you can help it)</button>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-header">Uncommon</div>
+				<div class="card-body">
+					<button class="host-control-run-command btn btn-warning" data-command="seagl-refresh-config">Refresh config (many services won't notice until a reboot)</button>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-header">Be real careful</div>
+				<div class="card-body">
+					<button class="host-control-run-command btn btn-warning" data-command="seagl-identify-room">Identify room configuration on-screen (may freak out room monitors)</button>
+					<button class="host-control-run-command btn btn-danger" data-command="reboot">Reboot (INTERRUPTS STREAMS)</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="tab-pane fade" id="hugops-tab-pane" role="tabpanel" aria-labelledby="hugops-tab" tabindex="0">hugops content (TODO)</div>
 </div>

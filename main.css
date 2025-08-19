@@ -1,3 +1,11 @@
 body {
 	margin: 10px;
 }
+
+.host-control-run-command {
+	margin: 3px;
+}
+
+#host-control-tab-pane .card {
+	margin: 10px;
+}

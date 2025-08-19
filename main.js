@@ -62,7 +62,8 @@ function fetchStreamDataTest() {
 
 	var channelSubs = {};
 
-	var channelList = data.map(obj => 'host_control_' + obj.name.replaceAll(' ', '_').toLowerCase());
+	var streamToHostChannelMap = Object.fromEntries(data.map(obj => [obj.name, 'host_control_' + obj.name.replaceAll(' ', '_').toLowerCase()]));
+	var channelList = Object.values(streamToHostChannelMap);
 	channelList.push('obs_heartbeats');
 
 	channelList.forEach(function(channelName) {
@@ -82,4 +83,21 @@ function fetchStreamDataTest() {
 			alert(errmsg);
 		}).subscribe();
 	});
+
+	//
+	// HOST CONTROL
+	//
+
+	var hostControlTmpl = document.getElementById('host-control-tab-pane-template');
+	var hostControlPane = document.getElementById('host-control-tab-pane-inner');
+	['__ALL__'].concat(Object.keys(streamToHostChannelMap)).forEach(function(streamName) {
+		var controllerNode = hostControlTmpl.cloneNode(true);
+		controllerNode.querySelector('.host-control-hostname-heading').textContent = streamName === '__ALL__' ? 'All hosts' : streamName;
+
+		controllerNode.removeAttribute('hidden');
+		controllerNode.removeAttribute('id');
+		hostControlPane.append(controllerNode);
+	});
+
+	document.getElementById('host-control-connecting-msg').hidden = true;
 })();
