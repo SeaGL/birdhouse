@@ -91,26 +91,42 @@ function fetchStreamDataTest() {
 	var hostControlTmpl = document.getElementById('host-control-tab-pane-template');
 	var hostControlPane = document.getElementById('host-control-tab-pane-inner');
 	['__ALL__'].concat(Object.keys(streamToHostChannelMap)).forEach(function(streamName) {
+		// Template out the section
 		var controllerNode = hostControlTmpl.cloneNode(true);
 		controllerNode.querySelector('.host-control-hostname-heading').textContent = streamName === '__ALL__' ? 'All hosts' : streamName;
 
 		controllerNode.removeAttribute('hidden');
 		controllerNode.removeAttribute('id');
 
-		Array.from(controllerNode.getElementsByClassName('host-control-run-command')).forEach(function(el) {
-			var cmd = el.dataset.command;
-			el.addEventListener('click', function() {
-				// TODO surface responses somewhere in the UI with this UUID
-				var uuid = crypto.randomUUID();
-				var req = {
-					reqUuid: uuid,
-					controlMsg: 'requestExecCmd',
-					cmdline: cmd.split(' ')
-				};
+		// Bind event listeners for all buttons, handling __ALL__ buttons specially
+		Array.from(controllerNode.getElementsByClassName('host-control-run-command'))
+		.forEach(function(el) {
+			if (streamName !== '__ALL__') {
+				var cmd = el.dataset.command;
+				el.addEventListener('click', function() {
+					// TODO surface responses somewhere in the UI with this UUID
+					var uuid = crypto.randomUUID();
+					var req = {
+						reqUuid: uuid,
+						controlMsg: 'requestExecCmd',
+						cmdline: cmd.split(' ')
+					};
 
-				channelSubs[streamToHostChannelMap[streamName]].publish(req);
-			});
+					channelSubs[streamToHostChannelMap[streamName]].publish(req);
+				});
+			} else {
+				el.addEventListener('click', function(event) {
+					// Notice that this querySelectorAll is at click time, not event listener bind time
+					// This is why it's ok if __ALL__ is not bound lt
+					document.querySelectorAll(`[data-command="${el.dataset.command}"]`).forEach(function(targetEl) {
+						if (el === targetEl) return;
+						targetEl.click();
+					});
+					event.preventDefault();
+				});
+			}
 		});
+
 		hostControlPane.append(controllerNode);
 	});
 
