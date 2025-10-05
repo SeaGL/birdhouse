@@ -96,8 +96,24 @@ function fetchStreamDataTest() {
 
 		controllerNode.removeAttribute('hidden');
 		controllerNode.removeAttribute('id');
+
+		Array.from(controllerNode.getElementsByClassName('host-control-run-command')).forEach(function(el) {
+			var cmd = el.dataset.command;
+			el.addEventListener('click', function() {
+				// TODO surface responses somewhere in the UI with this UUID
+				var uuid = crypto.randomUUID();
+				var req = {
+					reqUuid: uuid,
+					controlMsg: 'requestExecCmd',
+					cmdline: cmd.split(' ')
+				};
+
+				channelSubs[streamToHostChannelMap[streamName]].publish(req);
+			});
+		});
 		hostControlPane.append(controllerNode);
 	});
 
 	document.getElementById('host-control-connecting-msg').hidden = true;
+
 })();
