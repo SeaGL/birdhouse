@@ -11,6 +11,7 @@
   "private": true,
   "description": "",
   "dependencies": {
-    "centrifuge": "^5.4.0"
+    "centrifuge": "^5.4.0",
+    "smart-spawn": "^2.0.1"
   }
 }

@@ -64,7 +64,7 @@ function fetchStreamDataTest() {
 
 	var streamToHostChannelMap = Object.fromEntries(data.map(obj => [obj.name, 'host_control_' + obj.name.replaceAll(' ', '_').toLowerCase()]));
 	var channelList = Object.values(streamToHostChannelMap);
-	channelList.push('obs_heartbeats');
+	channelList.push('host_talkback');
 
 	channelList.forEach(function(channelName) {
 		var sub = centrifuge.newSubscription(channelName);

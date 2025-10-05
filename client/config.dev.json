@@ -4,6 +4,7 @@
 		"centrifugeOpts": {
 			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM3MjIiLCJpYXQiOjE3NTU1NzM0MjF9._X4rZbCi8LyWNaTtOBlrQzACAyiZgOU3abPoGgldoe4"
 		},
-		"roomIdOverride": "Virtual Test Room"
+		"roomIdOverride": "Virtual Test Room",
+		"isProduction": false
 	}
 }
