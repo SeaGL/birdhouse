@@ -7,6 +7,8 @@ function die() {
 	exit 1
 }
 
+cd $(git root)
+
 if ! test -x vendor/centrifugo; then
 	echo Downloading Centrifugo...
 	mkdir -p vendor/centrifugo.unverified
