@@ -6,12 +6,16 @@ var Centrifuge = require('centrifuge').Centrifuge;
 
 var config = require('./lib/config');
 var requestExecCmd = require('./lib/cmd/request-exec-cmd');
+var startServer = require('./lib/http-server');
 
 var centrifuge = new Centrifuge(config.centrifugeUrl, config.centrifugeOpts);
 
 var hostname = (config.roomIdOverride || fs.readFileSync('/var/lib/seagl/room-id')).toLowerCase().replaceAll(' ', '_');
 var hostControlChannel = centrifuge.newSubscription('host_control_' + hostname);
 var hostTalkbackChanName = 'host_talkback';
+
+// Start the HTTP server on localhost
+startServer();
 
 // Connection logging boilerplate
 
