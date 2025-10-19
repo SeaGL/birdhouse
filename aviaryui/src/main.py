@@ -120,7 +120,7 @@ class AviaryuiApplication(Adw.Application):
         action.change_state(GLib.Variant.new_boolean(new_state))
 
         # TODO use a real POST request when I don't have to deal with urllib's awfulness
-        with request.urlopen(f'http://localhost:9000/birdhouse/set-livestream-state?state={new_state}') as res:
+        with request.urlopen(f'http://localhost:9000/aviaryui/set-livestream-state?state={new_state}') as res:
             pass
 
         self.synchronize_ui()
