@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require('express');
+var cors = require('cors');
 var smartSpawn = require('smart-spawn');
 
 var config = require('./config');
@@ -8,6 +9,7 @@ var config = require('./config');
 var router = express.Router();
 
 router.use(express.json());
+router.use(cors());
 
 router.post('/exec-cmd', function(req, res) {
 	// Validation

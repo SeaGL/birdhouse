@@ -103,16 +103,35 @@ function fetchStreamDataTest() {
 		.forEach(function(el) {
 			if (streamName !== '__ALL__') {
 				var cmd = el.dataset.command;
-				el.addEventListener('click', function() {
-					// TODO surface responses somewhere in the UI with this UUID
-					var uuid = crypto.randomUUID();
-					var req = {
-						reqUuid: uuid,
-						controlMsg: 'requestExecCmd',
-						cmdline: cmd.split(' ')
-					};
+				el.addEventListener('click', async function() {
+					// TODO make this URL work in prod
+					// TODO do something about timeouts - `rpm-ostree` in particular may time out (maybe?? maybe not...)
+					var req = await fetch('http://localhost:9000/birdhouse/exec-cmd', {
+						method: 'POST',
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							cmdline: cmd.split(' ')
+						})
+					});
 
-					channelSubs[streamToHostChannelMap[streamName]].publish(req);
+					if (!req.ok) {
+						console.error(`Error executing command ${cmd}. Got status code ${res.status} on this object:`);
+						console.dir(res);
+						return;
+					}
+
+					var body = await req.json();
+
+					if (body.error && body.error.hasError) {
+						console.error(`Error executing command ${cmd}: ${body.error.message}`);
+						return;
+					}
+
+					// TODO actually surface this somewhere in the actual UI
+					console.log(`Successfully executed ${cmd} on host for stream ${streamName}: ${body.stdout}`);
 				});
 			} else {
 				el.addEventListener('click', function(event) {
