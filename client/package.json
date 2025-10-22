@@ -11,6 +11,9 @@
   "license": "AGPL-3.0+",
   "private": true,
   "description": "",
+  "bin": {
+    "birdhoused": "./index.js"
+  },
   "dependencies": {
     "centrifuge": "^5.4.0",
     "compression": "^1.8.1",
