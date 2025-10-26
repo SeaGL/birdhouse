@@ -88,12 +88,23 @@ function fetchStreamDataTest() {
 	// HOST CONTROL
 	//
 
+	function getZrokUrls(zrokOverviewStr) {
+		// Returns an object mapping hostnames to Zrok share URLs
+		var obj = JSON.parse(zrokOverviewStr);
+		// TODO assert that there's only one share per machine
+		return Object.fromEntries(
+			obj.environments.map(env => [env.environment.host.split(';')[1].trim(), env.shares[0].frontendEndpoint])
+		);
+	}
+
+	// TODO figure out how to get this from MyZrok, or filter out envs with no shares so that the control laptop isn't included
+	var zrokUrlMap = getZrokUrls(prompt('Paste the JSON output of `zrok overview`'));
 	var hostControlTmpl = document.getElementById('host-control-tab-pane-template');
 	var hostControlPane = document.getElementById('host-control-tab-pane-inner');
-	['__ALL__'].concat(Object.keys(streamToHostChannelMap)).forEach(function(streamName) {
+	['__ALL__'].concat(Object.keys(zrokUrlMap)).forEach(function(hostName) {
 		// Template out the section
 		var controllerNode = hostControlTmpl.cloneNode(true);
-		controllerNode.querySelector('.host-control-hostname-heading').textContent = streamName === '__ALL__' ? 'All hosts' : streamName;
+		controllerNode.querySelector('.host-control-hostname-heading').textContent = hostName === '__ALL__' ? 'All hosts' : hostName;
 
 		controllerNode.removeAttribute('hidden');
 		controllerNode.removeAttribute('id');
@@ -101,12 +112,11 @@ function fetchStreamDataTest() {
 		// Bind event listeners for all buttons, handling __ALL__ buttons specially
 		Array.from(controllerNode.getElementsByClassName('host-control-run-command'))
 		.forEach(function(el) {
-			if (streamName !== '__ALL__') {
+			if (hostName !== '__ALL__') {
 				var cmd = el.dataset.command;
 				el.addEventListener('click', async function() {
-					// TODO make this URL work in prod
 					// TODO do something about timeouts - `rpm-ostree` in particular may time out (maybe?? maybe not...)
-					var req = await fetch('http://localhost:9000/birdhouse/exec-cmd', {
+					var req = await fetch(`${zrokUrlMap[hostName]}/birdhouse/exec-cmd`, {
 						method: 'POST',
 						headers: {
 							'Accept': 'application/json',
@@ -131,7 +141,7 @@ function fetchStreamDataTest() {
 					}
 
 					// TODO actually surface this somewhere in the actual UI
-					console.log(`Successfully executed ${cmd} on host for stream ${streamName}: ${body.stdout}`);
+					console.log(`Successfully executed ${cmd} on host ${hostName}: ${body.stdout}`);
 				});
 			} else {
 				el.addEventListener('click', function(event) {
