@@ -4,7 +4,7 @@ var loadTestData = true;
 
 // TODO test this function
 function fetchStreamDataLive() {
-	return fetch("https://seagl.org/data/schedule.json")
+	return fetch("https://seagl.org/data/streams.json")
 	.then(response => {
 		if (!response.ok) {
 			console.error(response);
