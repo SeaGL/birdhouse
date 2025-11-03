@@ -1,6 +1,6 @@
 'use strict';
 
-var loadTestData = true;
+var loadTestData = false;
 
 // TODO test this function
 function fetchStreamDataLive() {
