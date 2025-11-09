@@ -93,7 +93,8 @@ function fetchStreamDataTest() {
 		var obj = JSON.parse(zrokOverviewStr);
 		// TODO assert that there's only one share per machine
 		return Object.fromEntries(
-			obj.environments.map(env => [env.environment.host.split(';')[1].trim(), env.shares[0].frontendEndpoint])
+			obj.environments.filter(env => env.shares)
+				.map(env => [env.environment.host.split(';')[1].trim(), env.shares[0].frontendEndpoint])
 		);
 	}
 
