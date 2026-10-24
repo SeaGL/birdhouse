@@ -99,7 +99,7 @@ function fetchStreamDataTest() {
 	}
 
 	// TODO figure out how to get this from MyZrok, or filter out envs with no shares so that the control laptop isn't included
-	var zrokUrlMap = getZrokUrls(prompt('Paste the JSON output of `zrok overview`'));
+	var zrokUrlMap; //= getZrokUrls(prompt('Paste the JSON output of `zrok overview`'));
 	var hostControlTmpl = document.getElementById('host-control-tab-pane-template');
 	var hostControlPane = document.getElementById('host-control-tab-pane-inner');
 	['__ALL__'].concat(Object.keys(zrokUrlMap)).forEach(function(hostName) {
